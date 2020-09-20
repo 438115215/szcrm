@@ -26,4 +26,8 @@ public interface CourseOrderMapper {
     int findCountByMap(Map<String, Object> params);
 
     List<CourseOrder> findListByMap(Map<String, Object> params);
+
+    CourseOrder findByOrderId(String order_id);
+
+    void deleteByOrderId(String order_id);
 }

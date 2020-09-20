@@ -1,5 +1,6 @@
 package com.gyf.szcrm.web.controller;
 
+import com.gyf.szcrm.model.CURDResult;
 import com.gyf.szcrm.model.CourseOrder;
 import com.gyf.szcrm.model.PageResult;
 import com.gyf.szcrm.service.ICourseOrderService;
@@ -24,11 +25,40 @@ public class CourseOrderController {
         return modelAndView;
     }
 
+    @RequestMapping("/add")
+    public ModelAndView add(ModelAndView modelAndView){
+        modelAndView.setViewName("/courseorder/add");
+        return modelAndView;
+    }
+    @RequestMapping("/detail")
+    public ModelAndView detail(ModelAndView modelAndView,String order_id){
+        CourseOrder order=orderService.findByOrderId(order_id);
+        modelAndView.addObject("order",order);
+        modelAndView.setViewName("/courseorder/detail");
+        return modelAndView;
+    }
+
+    @RequestMapping("/delete")
+    public CURDResult delete(ModelAndView modelAndView,String order_id){
+        CURDResult result=new CURDResult();
+        orderService.deleteByOrderId(order_id);
+        modelAndView.setViewName("/courseorder/delete");
+        return result;
+    }
+
+@RequestMapping("save")
+    public CURDResult save(CourseOrder order){
+        CURDResult result=new CURDResult();
+    System.out.println(order);
+    orderService.save(order);
+        return result;
+    }
+
     @RequestMapping("listJson")
     public @ResponseBody
-    PageResult<CourseOrder> listJson(){
+    PageResult<CourseOrder> listJson(int page,int limit){
 
-        PageResult<CourseOrder> result=orderService.findPageResult(null,1,8);
+        PageResult<CourseOrder> result=orderService.findPageResult(null,page,limit);
         return result;
     }
 }

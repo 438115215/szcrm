@@ -23,7 +23,13 @@ public class ICourseOrderServiceImpl implements ICourseOrderService {
         result.setCode(0);
 
         Map<String,Object> params=new HashMap<String,Object>();
+        params.put("start",(page-1)*pageSize);
+        params.put("pageSize",pageSize);
+
+
+
         int totalCount=orderMapper.findCountByMap(params);
+
         result.setCount(totalCount);
 
 
@@ -33,5 +39,20 @@ public class ICourseOrderServiceImpl implements ICourseOrderService {
         result.setData(list);
         return result;
 
+    }
+
+    @Override
+    public void save(CourseOrder order) {
+        orderMapper.insert(order);
+    }
+
+    @Override
+    public CourseOrder findByOrderId(String order_id) {
+        return orderMapper.findByOrderId(order_id);
+    }
+
+    @Override
+    public void deleteByOrderId(String order_id) {
+        orderMapper.deleteByOrderId(order_id);
     }
 }

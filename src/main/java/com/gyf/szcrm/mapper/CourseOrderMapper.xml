@@ -41,7 +41,7 @@
   </select>
 
   <select id="findListByMap" parameterType="map" resultType="com.gyf.szcrm.model.CourseOrder">
-    select * from t_course_order
+    select * from t_course_order order by order_date desc limit #{start},#{pageSize};
   </select>
 
 
@@ -57,12 +57,21 @@
       course_name, course_price, order_date, 
       update_datetime, name, remark
       )
-    values (#{uuid,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{wechatNo,jdbcType=VARCHAR}, 
-      #{wechatMark,jdbcType=VARCHAR}, #{qqNo,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
-      #{courseName,jdbcType=VARCHAR}, #{coursePrice,jdbcType=VARCHAR}, #{orderDate,jdbcType=DATE}, 
-      #{updateDatetime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}
+    values (#{uuid,jdbcType=VARCHAR}, #{order_id,jdbcType=VARCHAR}, #{wechat_no,jdbcType=VARCHAR},
+      #{wechat_mark,jdbcType=VARCHAR}, #{qq_no,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+      #{course_name,jdbcType=VARCHAR}, #{course_price,jdbcType=VARCHAR}, #{order_date,jdbcType=DATE},
+      #{update_datetime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}
       )
   </insert>
+
+  <select id="findByOrderId" parameterType="string" resultType="com.gyf.szcrm.model.CourseOrder">
+    select * from t_course_order where order_id=#{order_id};
+  </select>
+
+  <delete id="deleteByOrderId" parameterType="string" >
+    DELETE FROM t_course_order where order_id=#{order_id};
+  </delete>
+
   <insert id="insertSelective" parameterType="com.gyf.szcrm.model.CourseOrder">
     <!--
       WARNING - @mbggenerated
