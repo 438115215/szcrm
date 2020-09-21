@@ -1,6 +1,7 @@
 package com.gyf.szcrm.mapper;
 
 import com.gyf.szcrm.model.CourseOrder;
+import com.gyf.szcrm.model.MonthIncome;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,8 @@ public interface CourseOrderMapper {
     CourseOrder findByOrderId(String order_id);
 
     void deleteByOrderId(String order_id);
+
+    void update(CourseOrder order);
+
+    List<MonthIncome> getMonthIncomes();
 }

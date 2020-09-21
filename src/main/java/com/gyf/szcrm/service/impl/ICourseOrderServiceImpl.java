@@ -2,6 +2,7 @@ package com.gyf.szcrm.service.impl;
 
 import com.gyf.szcrm.mapper.CourseOrderMapper;
 import com.gyf.szcrm.model.CourseOrder;
+import com.gyf.szcrm.model.MonthIncome;
 import com.gyf.szcrm.model.PageResult;
 import com.gyf.szcrm.service.ICourseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class ICourseOrderServiceImpl implements ICourseOrderService {
         Map<String,Object> params=new HashMap<String,Object>();
         params.put("start",(page-1)*pageSize);
         params.put("pageSize",pageSize);
+        params.put("condition",condition);
 
 
 
@@ -54,5 +56,15 @@ public class ICourseOrderServiceImpl implements ICourseOrderService {
     @Override
     public void deleteByOrderId(String order_id) {
         orderMapper.deleteByOrderId(order_id);
+    }
+
+    @Override
+    public void update(CourseOrder order) {
+        orderMapper.update(order);
+    }
+
+    @Override
+    public List<MonthIncome> getMonthIncome() {
+        return orderMapper.getMonthIncomes();
     }
 }

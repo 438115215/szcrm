@@ -35,13 +35,37 @@
     -->
     remark
   </sql>
+  <!-- 公共的SQL片断-->
+  <sql id="search_where">
+    <where>
+      <if test="condition.wechat_no != null and condition.wechat_no !=''">
+        wechat_no like '%${condition.wechat_no}%'
+      </if>
+      <if test="condition.wechat_mark != null and condition.wechat_mark !=''">
+        and wechat_mark like '%${condition.wechat_mark}%'
+      </if>
+      <if test="condition.qq_no != null and condition.qq_no !=''">
+        and qq_no like '%${condition.qq_no}%'
+      </if>
+    </where>
+  </sql>
 
   <select id="findCountByMap" parameterType="map" resultType="int">
     select count(*) from t_course_order
+    <include refid="search_where"></include>
   </select>
 
+
   <select id="findListByMap" parameterType="map" resultType="com.gyf.szcrm.model.CourseOrder">
-    select * from t_course_order order by order_date desc limit #{start},#{pageSize};
+    select * from t_course_order <include refid="search_where"></include>
+    order by order_date desc limit #{start},#{pageSize};
+  </select>
+
+  <select id="getMonthIncomes" resultType="com.gyf.szcrm.model.MonthIncome">
+    select LEFT(order_date,7) as date
+,count(*) as total ,
+SUM(CONVERT(course_price,DECIMAL(18,2))) as income
+from t_course_order GROUP BY LEFT(order_date,7);
   </select>
 
 
@@ -57,7 +81,7 @@
       course_name, course_price, order_date, 
       update_datetime, name, remark
       )
-    values (#{uuid,jdbcType=VARCHAR}, #{order_id,jdbcType=VARCHAR}, #{wechat_no,jdbcType=VARCHAR},
+    values (UUID(), UUID(), #{wechat_no,jdbcType=VARCHAR},
       #{wechat_mark,jdbcType=VARCHAR}, #{qq_no,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
       #{course_name,jdbcType=VARCHAR}, #{course_price,jdbcType=VARCHAR}, #{order_date,jdbcType=DATE},
       #{update_datetime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=LONGVARCHAR}
@@ -71,6 +95,14 @@
   <delete id="deleteByOrderId" parameterType="string" >
     DELETE FROM t_course_order where order_id=#{order_id};
   </delete>
+
+  <update id="update" parameterType="com.gyf.szcrm.model.CourseOrder" >
+    UPDATE t_course_order SET name=#{name},wechat_no=#{wechat_no},wechat_mark=#{wechat_mark},
+    qq_no=#{qq_no},tel=#{tel},course_name=#{course_name},course_price=#{course_price},
+    order_date=#{order_date},remark=#{remark}
+    WHERE
+    order_id=#{order_id}
+  </update>
 
   <insert id="insertSelective" parameterType="com.gyf.szcrm.model.CourseOrder">
     <!--
