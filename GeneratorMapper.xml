@@ -70,7 +70,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-		<table tableName="t_course_order" domainObjectName="CourseOrder"
+		<table tableName="t_course_category" domainObjectName="CourseCategory"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">

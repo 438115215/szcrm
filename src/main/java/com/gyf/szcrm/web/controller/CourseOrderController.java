@@ -1,34 +1,40 @@
 package com.gyf.szcrm.web.controller;
 
 import com.gyf.szcrm.model.CURDResult;
+import com.gyf.szcrm.model.CourseCategory;
 import com.gyf.szcrm.model.CourseOrder;
 import com.gyf.szcrm.model.PageResult;
+import com.gyf.szcrm.service.ICourseCategoryService;
 import com.gyf.szcrm.service.ICourseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/courseorder")
 public class CourseOrderController {
     @Autowired
     private ICourseOrderService orderService;
 
+    @Autowired
+    private ICourseCategoryService categoryService;
+
     @RequestMapping("/list")
-    public ModelAndView list(ModelAndView modelAndView){
-        modelAndView.setViewName("/courseorder/list");
-        return modelAndView;
+    public String list(){
+        return "/courseorder/list";
     }
 
     @RequestMapping("/add")
-    public ModelAndView add(ModelAndView modelAndView){
-        modelAndView.setViewName("/courseorder/add");
-        return modelAndView;
+    public String add(Model model){
+       List<CourseCategory> categoryList=categoryService.findAllLists();
+        model.addAttribute("categoryList",categoryList);
+        return "/courseorder/add";
+
     }
 
     @RequestMapping("/edit")
@@ -36,6 +42,8 @@ public class CourseOrderController {
         System.out.println("修改订单order_id"+order_id);
         CourseOrder order=orderService.findByOrderId(order_id);
         modelAndView.addObject("order",order);
+        List<CourseCategory> categoryList=categoryService.findAllLists();
+        modelAndView.addObject("categoryList",categoryList);
         modelAndView.setViewName("courseorder/edit");
         return modelAndView;
     }
@@ -49,6 +57,7 @@ public class CourseOrderController {
     }
 
     @RequestMapping("/delete")
+    @ResponseBody
     public CURDResult delete(ModelAndView modelAndView,String order_id){
         CURDResult result=new CURDResult();
         orderService.deleteByOrderId(order_id);
@@ -57,6 +66,7 @@ public class CourseOrderController {
     }
 
 @RequestMapping("save")
+@ResponseBody
     public CURDResult save(CourseOrder order){
 
          CURDResult result=new CURDResult();
