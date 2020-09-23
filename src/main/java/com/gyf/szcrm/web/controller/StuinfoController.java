@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/stuinfo")
 public class StuinfoController {
 
-
-    @ResponseBody
     @RequestMapping("/list")
     public String list(){
         return "stuinfo/list";
