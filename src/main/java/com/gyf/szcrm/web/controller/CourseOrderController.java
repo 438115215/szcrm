@@ -34,7 +34,6 @@ public class CourseOrderController {
        List<CourseCategory> categoryList=categoryService.findAllLists();
         model.addAttribute("categoryList",categoryList);
         return "/courseorder/add";
-
     }
 
     @RequestMapping("/edit")
@@ -68,16 +67,13 @@ public class CourseOrderController {
 @RequestMapping("save")
 @ResponseBody
     public CURDResult save(CourseOrder order){
-
          CURDResult result=new CURDResult();
         if (order.getOrder_id()==null||order.getOrder_id().length()==0){
             orderService.save(order);
         }else{
             orderService.update(order);
         }
-
     System.out.println(order);
-
         return result;
     }
 

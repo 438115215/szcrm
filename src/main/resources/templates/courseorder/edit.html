@@ -111,7 +111,7 @@
     function doSave() {
        // alert('.....')
         var requestData=$("#form1").serialize();
-        $.post("/courseorder/save",requestData,function (responseData) {
+        $.get("/courseorder/save",requestData,function (responseData) {
             console.log(responseData);
             if (responseData.success==1){
         layer.alert("修改成功",{yes:function () {
